@@ -2,6 +2,7 @@ import { useState } from "react";
 import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import ProjectSideBar from "./components/ProjectSideBar";
+import SelectedProject from "./components/SelectedProject";
 
 function App() {
   const [projectState, setProjectState] = useState({
@@ -10,7 +11,7 @@ function App() {
   });
 
   // Adding New Project
-  function hamdleAddProject() {
+  function handleAddProject() {
     setProjectState((prevState) => {
       return { ...prevState, selectedProjectId: null };
     });
@@ -34,27 +35,45 @@ function App() {
   }
 
   // Cancel Adding New Project
-  function hamdleCancelAddProject() {
+  function handleCancelAddProject() {
     setProjectState((prevState) => {
       return { ...prevState, selectedProjectId: undefined };
     });
   }
 
+  // Selecting a Project
+  function handleSelectProject(id) {
+    setProjectState((prevState) => {
+      return { ...prevState, selectedProjectId: id };
+    });
+  }
+
+  const selectedProject = projectState.project.find(
+    (project) => project.id === projectState.selectedProjectId
+  );
+
+  let content;
+  if (projectState.selectedProjectId === undefined) {
+    content = <NoProjectSelected addNewProject={handleAddProject} />;
+  } else if (projectState.selectedProjectId === null) {
+    content = (
+      <NewProject
+        onSave={handleSaveProject}
+        onCancel={handleCancelAddProject}
+      />
+    );
+  } else {
+    content = <SelectedProject selectedProject={selectedProject} />;
+  }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <ProjectSideBar
-        addNewProject={hamdleAddProject}
+        addNewProject={handleAddProject}
         projects={projectState.project}
+        onSelect={handleSelectProject}
       />
-
-      {projectState.selectedProjectId === null ? (
-        <NewProject
-          onSave={handleSaveProject}
-          onCancel={hamdleCancelAddProject}
-        />
-      ) : (
-        <NoProjectSelected addNewProject={hamdleAddProject} />
-      )}
+      {content}
     </main>
   );
 }
