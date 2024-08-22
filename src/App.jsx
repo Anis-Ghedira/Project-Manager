@@ -12,26 +12,44 @@ function App() {
   // Adding New Project
   function hamdleAddProject() {
     setProjectState((prevState) => {
-      let newProject = { ...prevState };
-      newProject.selectedProjectId = null;
-      return newProject;
+      return { ...prevState, selectedProjectId: null };
     });
   }
+
+  // Saving New Project
+  function handleSaveProject(CurrentProjectDetails) {
+    setProjectState((prevState) => {
+      let saveProject = { ...prevState, selectedProjectId: undefined };
+      saveProject.project = [
+        {
+          title: CurrentProjectDetails.title,
+          description: CurrentProjectDetails.descritption,
+          dueDate: CurrentProjectDetails.dueDate,
+          id: Math.random(),
+        },
+        ...prevState.project,
+      ];
+      return saveProject;
+    });
+  }
+  console.log(projectState);
 
   // Cancel Adding New Project
   function hamdleCancelAddProject() {
     setProjectState((prevState) => {
-      let cancelProject = { ...prevState };
-      cancelProject.selectedProjectId = undefined;
-      return cancelProject;
+      return { ...prevState, selectedProjectId: undefined };
     });
   }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <ProjectSideBar addNewProject={hamdleAddProject} />
 
       {projectState.selectedProjectId === null ? (
-        <NewProject onCancel={hamdleCancelAddProject} />
+        <NewProject
+          onSave={handleSaveProject}
+          onCancel={hamdleCancelAddProject}
+        />
       ) : (
         <NoProjectSelected addNewProject={hamdleAddProject} />
       )}
