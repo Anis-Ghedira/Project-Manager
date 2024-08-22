@@ -32,7 +32,6 @@ function App() {
       return saveProject;
     });
   }
-  console.log(projectState);
 
   // Cancel Adding New Project
   function hamdleCancelAddProject() {
@@ -43,7 +42,10 @@ function App() {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectSideBar addNewProject={hamdleAddProject} />
+      <ProjectSideBar
+        addNewProject={hamdleAddProject}
+        projects={projectState.project}
+      />
 
       {projectState.selectedProjectId === null ? (
         <NewProject
