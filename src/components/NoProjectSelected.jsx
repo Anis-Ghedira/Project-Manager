@@ -1,5 +1,5 @@
 import NoProjectImage from "../assets/no-projects.png";
-export default function NoProjectSelected() {
+export default function NoProjectSelected({ addNewProject }) {
   return (
     <div className="mt-24 text-center w-2/3">
       <img
@@ -14,7 +14,10 @@ export default function NoProjectSelected() {
         Select a project or get started with a new one.
       </p>
       <p>
-        <button className="bg-cyan-800 text-stone-50 hover:bg-cyan-900 mr-6 px-6 py-2 rounded-md">
+        <button
+          onClick={addNewProject}
+          className="bg-cyan-800 text-stone-50 hover:bg-cyan-900 mr-6 px-6 py-2 rounded-md"
+        >
           Create a new project
         </button>
       </p>
